@@ -1,7 +1,7 @@
 ---
-title: "index"
+title: "Welcome"
 output: html_document
 ---
-<image-card alt="My Photo" src="assets/logopic.jpg" ></image-card>
+<img src="assets/logopic.jpg" alt="My Photo" style="width: 200px; height: auto; border-radius: 50%; float: left; margin-right: 20px;">
 
 I'm Minseo Brenda Kim, current Environmental Health Data Science Master's program graduate student in Columbia University.
