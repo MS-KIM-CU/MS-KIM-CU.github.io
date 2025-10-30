@@ -1,28 +1,72 @@
 ---
-title: "Dashboard"
-output: html_document
+title: "Instacart Grocery Dashboard"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+library(flexdashboard)
+library(tidyverse)
+library(plotly)
+library(p8105.datasets)
+
+# Load and sample data
+data("instacart")
+instacart_sample <- instacart |> 
+  sample_n(10000) |>  # Random sample
+  filter(!is.na(department))  # Remove NA values
 ```
 
-## R Markdown
+------------------------------------------------------------------------
+## Scatterplot
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+```{r}
+plot_ly(instacart_sample, 
+        x = ~order_hour_of_day, 
+        y = ~order_number, 
+        type = "scatter", 
+        mode = "markers",
+        color = ~aisle, 
+        alpha = 0.6) |> 
+  layout(title = "Order Hour vs. Order Number by Aisle",
+         xaxis = list(title = "Hour of Day (0-23)"),
+         yaxis = list(title = "Order Sequence Number"),
+         legend = list(title = list(text = "Aisle")))
 ```
 
-## Including Plots
+------------------------------------------------------------------------
+## Bar Plot
+```{r}
+top_aisles <- instacart_sample |> 
+  count(aisle) |> 
+  top_n(10, n) |> 
+  mutate(aisle = fct_reorder(aisle, n))
 
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+plot_ly(top_aisles, 
+        x = ~aisle, 
+        y = ~n, 
+        type = "bar", 
+        color = ~aisle,
+        showlegend = FALSE) |> 
+  layout(title = "Top 10 Aisles Based on Count of Orders",
+         xaxis = list(title = "Name of Aisle", tickangle = -45),
+         yaxis = list(title = "Number of Orders"))
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+------------------------------------------------------------------------
+## Box Plot
+```{r}
+plot_ly(instacart_sample, 
+        y = ~add_to_cart_order, 
+        type = "box", 
+        color = ~department,
+        boxpoints = "outliers") |> 
+  layout(title = "Add-to-Cart Distribution Across Departments",
+         yaxis = list(title = "Position in Cart (1 = First Added)"),
+         xaxis = list(title = "Department"),
+         showlegend = TRUE)
+```
+
