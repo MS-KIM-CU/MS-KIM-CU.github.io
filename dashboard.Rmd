@@ -19,8 +19,7 @@ instacart_sample <- instacart |>
   filter(!is.na(department))  # Remove NA values
 ```
 
-------------------------------------------------------------------------
-## Scatterplot
+## Scatterplot {data-width=600}
 
 ```{r}
 plot_ly(instacart_sample, 
@@ -28,16 +27,17 @@ plot_ly(instacart_sample,
         y = ~order_number, 
         type = "scatter", 
         mode = "markers",
-        color = ~aisle, 
+        color = ~department, 
         alpha = 0.6) |> 
   layout(title = "Order Hour vs. Order Number by Aisle",
          xaxis = list(title = "Hour of Day (0-23)"),
          yaxis = list(title = "Order Sequence Number"),
-         legend = list(title = list(text = "Aisle")))
+         legend = list(title = list(text = "Department")))
 ```
+The above scatterplot shows the relationship between the hour of the day orders are placed and the sequence number of the order for each user. We can find some patterns, such as increased order activity in certain departments during peak hours.
 
-------------------------------------------------------------------------
-## Bar Plot
+## Bar Plot {data-width=400}
+
 ```{r}
 top_aisles <- instacart_sample |> 
   count(aisle) |> 
@@ -54,10 +54,10 @@ plot_ly(top_aisles,
          xaxis = list(title = "Name of Aisle", tickangle = -45),
          yaxis = list(title = "Number of Orders"))
 ```
+The bar plot shoss the top 10 aisles with the most orders in the sampled Instacart dataset. It highlights the two most popular categories are fresh fruits and fresh vegetables.
 
+## Boxplot {data-width=600}
 
-------------------------------------------------------------------------
-## Box Plot
 ```{r}
 plot_ly(instacart_sample, 
         y = ~add_to_cart_order, 
@@ -69,4 +69,4 @@ plot_ly(instacart_sample,
          xaxis = list(title = "Department"),
          showlegend = TRUE)
 ```
-
+The box plot displays the distribution of product addition in the shopping cart across different departments. It reveals medians, quartiles, and outliers, showing how early or late each department's items are added.
