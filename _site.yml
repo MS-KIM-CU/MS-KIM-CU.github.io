@@ -1,0 +1,16 @@
+name: "MS-KIM-CU's Website"
+output_dir: "."
+navbar:
+  title: "Home"
+  right:
+    - text: "Resume"
+      href: resume.html
+    - text: "GitHub"
+      href: https://github.com/MS-KIM-CU
+    - text: "Email"
+      href: mailto:mk5184@cumc.columbia.edu 
+    - text: "LinkedIn"
+      href: https://www.linkedin.com/in/msbkim
+output:
+  html_document:
+    theme: flatly
